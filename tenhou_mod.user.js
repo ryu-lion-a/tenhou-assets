@@ -28,16 +28,18 @@
         "tsumo": "omoibto.mp3"
     };
 
-    const OriginalAudio = window.Audio;
+const OriginalAudio = window.Audio;
     window.Audio = function(src) {
         if (src) {
-            const fileName = src.split('/').pop();
-            // 天鳳が何の音を鳴らそうとしたかコンソールに出す
-            console.log("Tenhou sound request:", fileName);
+            // 天鳳が呼ぼうとしているすべての音をコンソールに表示
+            const fileNameWithExt = src.split('/').pop();
+            const fileName = fileNameWithExt.split('.')[0]; // 拡張子を無視
+            
+            console.log("【天鳳の要求】:", fileNameWithExt);
 
             if (VOICE_MAP[fileName]) {
                 const newSrc = BASE_URL + VOICE_MAP[fileName];
-                console.log(`[Redirect Success] ${fileName} -> ${newSrc}`);
+                console.log(`【★差し替え成功★】: ${fileNameWithExt} -> ${newSrc}`);
                 return new OriginalAudio(newSrc);
             }
         }
