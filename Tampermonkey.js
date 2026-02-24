@@ -1,17 +1,13 @@
 // ==UserScript==
 // @name         Tenhou Furina Voice Changer
-// @namespace    http://tampermonkey.net/
-// @version      1.0
-// @description  天鳳のSEをフリーナの声に差し替える
-// @author       Ryutaro Koyama
-// @match        *://tenhou.net/3/*
-// @match        *://tenhou.net/4/*
-// @match        *://tenhou.net/0/*
+// @match        *://*.tenhou.net/*
 // @grant        none
 // ==/UserScript==
 
 (function() {
     'use strict';
+    console.log("フリーナMod起動成功！");
+    alert("Modが読み込まれました！"); // 画面にポップアップを出す
 
     // --- 設定: ファイル名とカスタムURLの対応表 ---
     const BASE_URL = "https://ryu-lion-a.github.io/tenhou-assets/se/";
