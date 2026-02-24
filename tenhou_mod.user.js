@@ -16,7 +16,7 @@
         "02": "digoku.mp3",
         "31": "digoku.mp3", //リーチ　確定
         "29": "hokaha_nanimo.mp3",// チー　確定
-        "35": "chest.mp3", // ツモ　確定
+        "35": "omoibto.mp3", // ツモ　確定
         "34": "dannzai.mp3", 
         "25": "hokaha_nanimo.mp3", // ポン　確定
         "26": "chest.mp3",
