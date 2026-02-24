@@ -4,8 +4,9 @@
 // @version      1.0
 // @description  天鳳のSEをフリーナの声に差し替える
 // @author       Ryutaro Koyama
-// @match        https://tenhou.net/3/*
-// @match        https://tenhou.net/4/*
+// @match        *://tenhou.net/3/*
+// @match        *://tenhou.net/4/*
+// @match        *://tenhou.net/0/*
 // @grant        none
 // ==/UserScript==
 
