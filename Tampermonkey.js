@@ -1,34 +1,35 @@
 // ==UserScript==
-// @name         Tenhou Furina Voice Changer
+// @name         Tenhou_Furina_Mod
+// @namespace    http://tampermonkey.net/
+// @version      1.1
+// @description  Tenhou Voice Changer
+// @author       Ryutaro Koyama
 // @match        *://*.tenhou.net/*
 // @grant        none
 // ==/UserScript==
 
 (function() {
     'use strict';
-    console.log("フリーナMod起動成功！");
-    alert("Modが読み込まれました！"); // 画面にポップアップを出す
+    // 起動確認用のログ
+    console.log("--- Furina Mod Loading Start ---");
+    alert("フリーナModが起動しました！");
 
-    // --- 設定: ファイル名とカスタムURLの対応表 ---
     const BASE_URL = "https://ryu-lion-a.github.io/tenhou-assets/se/";
     const VOICE_MAP = {
-        "start.mp3":"dannzai.mp3",
-        "pon.mp3": "hokaha_nanimo.mp3",
-        "chi.mp3": "hokaha_nanimo.mp3",
+        "start.mp3": "danzai.mp3",
+        "pon.mp3": "irany.mp3",
+        "chi.mp3": "irany.mp3",
         "kan.mp3": "chest.mp3",
-        "reach.mp3": "digoku.mp3",
-        "ron.mp3": "omoibto.mp3",
-        "tsumo.mp3": "omoibto.mp3"
+        "reach.mp3": "jigoku.mp3",
+        "ron.mp3": "omoibito.mp3",
+        "tsumo.mp3": "omoibito.mp3"
     };
 
-    // --- インターセプト処理 ---
     const OriginalAudio = window.Audio;
-
     window.Audio = function(src) {
         if (src) {
-            // URLからファイル名（pon.mp3等）を抽出
             const fileName = src.split('/').pop();
-
+            console.log("Tenhou is calling:", fileName);
             if (VOICE_MAP[fileName]) {
                 const newSrc = BASE_URL + VOICE_MAP[fileName];
                 console.log(`[TenhouMod] Redirecting: ${fileName} -> ${newSrc}`);
@@ -37,8 +38,5 @@
         }
         return new OriginalAudio(src);
     };
-
-    // プロトタイプを継承させておく（互換性のため）
     window.Audio.prototype = OriginalAudio.prototype;
-
 })();
