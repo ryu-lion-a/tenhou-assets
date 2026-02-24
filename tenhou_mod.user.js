@@ -20,12 +20,12 @@
     // 左側：天鳳が呼ぶ名前 / 右側：GitHubに上げた半角のファイル名
     const VOICE_MAP = {
         "start.mp3": "danzai.mp3",
-        "pon.mp3": "irany.mp3",
-        "chi.mp3": "irany.mp3",
+        "pon.mp3": "hokaha_nanimo.mp3",
+        "chi.mp3": "hokaha_nanimo.mp3",
         "kan.mp3": "chest.mp3",
-        "reach.mp3": "jigoku.mp3",
-        "ron.mp3": "omoibito.mp3",
-        "tsumo.mp3": "omoibito.mp3"
+        "reach.mp3": "digoku.mp3",
+        "ron.mp3": "omoibto.mp3",
+        "tsumo.mp3": "omoibto.mp3"
     };
 
     const OriginalAudio = window.Audio;
