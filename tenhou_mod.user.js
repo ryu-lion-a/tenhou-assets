@@ -19,7 +19,7 @@
 
     // 左側：天鳳が呼ぶ名前 / 右側：GitHubに上げた半角のファイル名
     const VOICE_MAP = {
-        "start.mp3": "danzai.mp3",
+        "start.mp3": "dannzai.mp3",
         "pon.mp3": "hokaha_nanimo.mp3",
         "chi.mp3": "hokaha_nanimo.mp3",
         "kan.mp3": "chest.mp3",
