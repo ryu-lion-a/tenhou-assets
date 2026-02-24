@@ -10,14 +10,15 @@
     console.log("--- フリーナMod V4：全方位監視（XHR対応）開始 ---");
 
     const BASE_URL = "https://ryu-lion-a.github.io/tenhou-assets/se/";
+// 天鳳の内部番号とフリーナ音声の対応
     const VOICE_MAP = {
-        "start": "dannzai.mp3",
-        "pon": "hokaha_nanimo.mp3",
-        "chi": "hokaha_nanimo.mp3",
-        "kan": "chest.mp3",
-        "reach": "digoku.mp3",
-        "ron": "omoibto.mp3",
-        "tsumo": "omoibto.mp3"
+        "01": "dannzai.mp3",        // 対局開始
+        "24": "hokaha_nanimo.mp3",   // ポン
+        "25": "hokaha_nanimo.mp3",   // チー
+        "26": "chest.mp3",           // カン
+        "27": "digoku.mp3",          // リーチ
+        "32": "omoibto.mp3",         // ロン
+        "33": "omoibto.mp3"          // ツモ
     };
 
     // 音声差し替え判定関数
