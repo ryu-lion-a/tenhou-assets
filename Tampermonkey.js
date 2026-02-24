@@ -15,7 +15,7 @@
     // --- 設定: ファイル名とカスタムURLの対応表 ---
     const BASE_URL = "https://ryu-lion-a.github.io/tenhou-assets/se/";
     const VOICE_MAP = {
-        "start.mp3":"断罪の刃",
+        "start.mp3":"断罪の刃.mp3",
         "pon.mp3": "他は何もいらない.mp3",
         "chi.mp3": "他は何もいらない.mp3",
         "kan.mp3": "チェスト.mp3",
