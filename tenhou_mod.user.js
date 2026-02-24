@@ -1,23 +1,21 @@
 // ==UserScript==
-// @name         Tenhou_Furina_Mod_V2
+// @name         Tenhou_Furina_Ultimate_Hook_V3
 // @namespace    http://tampermonkey.net/
-// @version      1.2
-// @description  Tenhou Voice Changer (Fixed Match and Names)
+// @version      1.3
+// @description  Tenhou Voice Changer (Updated Voice Map)
 // @author       Ryutaro Koyama
 // @match        *://*.tenhou.net/*
+// @run-at       document-start
 // @grant        none
 // ==/UserScript==
 
 (function() {
     'use strict';
-
-    // 起動した瞬間にアラートを出して「更新されたか」を即座に確認
-    console.log("--- Furina Mod Loading ---");
-    alert("フリーナModが正常に読み込まれました！");
+    console.log("--- フリーナMod V3：監視開始 ---");
 
     const BASE_URL = "https://ryu-lion-a.github.io/tenhou-assets/se/";
-
-    // 左側：天鳳が呼ぶ名前 / 右側：GitHubに上げた半角のファイル名
+    
+    // 龍太郎さん指定の新しいマッピング
     const VOICE_MAP = {
         "start": "dannzai.mp3",
         "pon": "hokaha_nanimo.mp3",
@@ -28,22 +26,42 @@
         "tsumo": "omoibto.mp3"
     };
 
-const OriginalAudio = window.Audio;
-    window.Audio = function(src) {
-        if (src) {
-            // 天鳳が呼ぼうとしているすべての音をコンソールに表示
-            const fileNameWithExt = src.split('/').pop();
-            const fileName = fileNameWithExt.split('.')[0]; // 拡張子を無視
-            
-            console.log("【天鳳の要求】:", fileNameWithExt);
+    // 音声差し替えの核となる関数
+    const getNewSrc = (url) => {
+        const fileNameWithExt = url.split('/').pop();
+        const fileName = fileNameWithExt.split('.')[0]; // 拡張子を除去
+        
+        // ログを出して天鳳が何を呼んでいるか可視化する
+        console.log("【天鳳の要求】:", fileNameWithExt);
 
-            if (VOICE_MAP[fileName]) {
-                const newSrc = BASE_URL + VOICE_MAP[fileName];
-                console.log(`【★差し替え成功★】: ${fileNameWithExt} -> ${newSrc}`);
-                return new OriginalAudio(newSrc);
-            }
+        if (VOICE_MAP[fileName]) {
+            const newSrc = BASE_URL + VOICE_MAP[fileName];
+            console.log(`【★差し替え実行★】: ${fileNameWithExt} -> ${newSrc}`);
+            return newSrc;
         }
-        return new OriginalAudio(src);
+        return null;
+    };
+
+    // 1. Audio オブジェクトのフック
+    const OriginalAudio = window.Audio;
+    window.Audio = function(src) {
+        const newSrc = src ? getNewSrc(src) : null;
+        return new OriginalAudio(newSrc || src);
     };
     window.Audio.prototype = OriginalAudio.prototype;
+
+    // 2. 通信 (fetch) のフック
+    const originalFetch = window.fetch;
+    window.fetch = async function(...args) {
+        const url = args[0].toString();
+        if (url.includes('.mp3') || url.includes('.wav')) {
+            const newSrc = getNewSrc(url);
+            if (newSrc) {
+                return originalFetch(newSrc, args[1]);
+            }
+        }
+        return originalFetch(...args);
+    };
+
+    console.log("監視の準備が整いました。対局または牌譜再生を開始してください。");
 })();
