@@ -1,9 +1,5 @@
 // ==UserScript==
-// @name         Tenhou_Furina_Ultimate_Hook_V3
-// @namespace    http://tampermonkey.net/
-// @version      1.3
-// @description  Tenhou Voice Changer (Updated Voice Map)
-// @author       Ryutaro Koyama
+// @name         Tenhou_Furina_Omni_Hook_V4
 // @match        *://*.tenhou.net/*
 // @run-at       document-start
 // @grant        none
@@ -11,11 +7,9 @@
 
 (function() {
     'use strict';
-    console.log("--- フリーナMod V3：監視開始 ---");
+    console.log("--- フリーナMod V4：全方位監視（XHR対応）開始 ---");
 
     const BASE_URL = "https://ryu-lion-a.github.io/tenhou-assets/se/";
-    
-    // 龍太郎さん指定の新しいマッピング
     const VOICE_MAP = {
         "start": "dannzai.mp3",
         "pon": "hokaha_nanimo.mp3",
@@ -26,13 +20,11 @@
         "tsumo": "omoibto.mp3"
     };
 
-    // 音声差し替えの核となる関数
+    // 音声差し替え判定関数
     const getNewSrc = (url) => {
         const fileNameWithExt = url.split('/').pop();
-        const fileName = fileNameWithExt.split('.')[0]; // 拡張子を除去
-        
-        // ログを出して天鳳が何を呼んでいるか可視化する
-        console.log("【天鳳の要求】:", fileNameWithExt);
+        const fileName = fileNameWithExt.split('.')[0];
+        console.log("【通信検出】:", fileNameWithExt);
 
         if (VOICE_MAP[fileName]) {
             const newSrc = BASE_URL + VOICE_MAP[fileName];
@@ -42,7 +34,19 @@
         return null;
     };
 
-    // 1. Audio オブジェクトのフック
+    // --- 網1: XMLHttpRequest (天鳳がよく使う通信方式) ---
+    const originalXHR = window.XMLHttpRequest.prototype.open;
+    window.XMLHttpRequest.prototype.open = function(method, url) {
+        if (typeof url === 'string' && (url.includes('.mp3') || url.includes('.wav'))) {
+            const newSrc = getNewSrc(url);
+            if (newSrc) {
+                url = newSrc;
+            }
+        }
+        return originalXHR.apply(this, arguments);
+    };
+
+    // --- 網2: window.Audio (標準再生) ---
     const OriginalAudio = window.Audio;
     window.Audio = function(src) {
         const newSrc = src ? getNewSrc(src) : null;
@@ -50,18 +54,16 @@
     };
     window.Audio.prototype = OriginalAudio.prototype;
 
-    // 2. 通信 (fetch) のフック
+    // --- 網3: fetch (モダンな通信方式) ---
     const originalFetch = window.fetch;
     window.fetch = async function(...args) {
         const url = args[0].toString();
         if (url.includes('.mp3') || url.includes('.wav')) {
             const newSrc = getNewSrc(url);
-            if (newSrc) {
-                return originalFetch(newSrc, args[1]);
-            }
+            if (newSrc) return originalFetch(newSrc, args[1]);
         }
         return originalFetch(...args);
     };
 
-    console.log("監視の準備が整いました。対局または牌譜再生を開始してください。");
+    console.log("すべての通信網にフックをかけました。");
 })();
